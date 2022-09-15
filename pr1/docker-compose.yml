@@ -1,0 +1,24 @@
+version: '3'
+
+services: 
+  server:
+    container_name: php-apache
+    build: ./php
+    restart: always
+    volumes:
+      - ./php/src:/var/www/html
+    ports:
+      - 80:80
+    links:
+      - db
+  db:
+    container_name: db
+    image: mariadb
+    restart: always
+    environment: 
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d:rw
+    ports:
+      - 3308:3306
+  
